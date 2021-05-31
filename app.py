@@ -3,6 +3,8 @@ from flask import Flask, request, g, redirect, url_for, \
                   render_template, flash, make_response
 from werkzeug.security import check_password_hash, generate_password_hash
 import sqlite3
+from werkzeug.exceptions import abort
+
 
 # configuration
 app = Flask(__name__)
@@ -51,50 +53,99 @@ def get_Media(id):
 def home():
     db = get_db()
     Media = db.execute(
-        'SELECT id, title, author_id, type, release, rating'
+        'SELECT id, title, type, release, rating'
         ' FROM Media'
-        ' WHERE author_id = ?'
+    ).fetchall()
+    return render_template('home.html', Media=Media)
+
+    '''
+    db = get_db()
+    Media = db.execute(
+        'SELECT id, title, type, release, rating'
+        ' FROM Media'
+        ' WHERE id = ?'
         ' ORDER BY created DESC',
         (g.Media['id'],)
     ).fetchall()
+    '''
 
     return render_template('home.html', Media=Media)
 
 
 @app.route('/edit/<int:id>', methods=('GET', 'POST'))
 def edit(id):
-    review = get_review(id)
-
+    Media = get_Media(id)
     if request.method == 'POST':
-        text = request.form['review-text']
-        text = text.strip()
+        newid = request.form['id']
+        newid = newid.strip()
+
+        title = request.form['title']
+        title = title.strip()
+
+        type = request.form['type']
+        type = type.strip()
+
+        release = request.form['release']
+        release = release.strip()
+
+        rating = request.form['rating']
+        rating = rating.strip()
+
         db = get_db()
         error = None
 
-        if not text:
-            error = 'You can\'t update the review to nothing.'
+        if not newid:
+            error = 'ID is required.'
+        elif not title:
+            error = 'Title is required.'
+        elif not type:
+            error = 'Movie/Show is required.'
+        elif not release:
+            error = 'Release Year is required.'
+        elif not rating:
+                error = 'Rating is required.'
+
         if error is None:
             db.execute(
-                'UPDATE review SET content = ?'
+                'UPDATE Media SET title = ?'
                 ' WHERE id = ?',
-                (text, id)
+                (title, id)
+            )
+            db.execute(
+                'UPDATE Media SET type = ?'
+                ' WHERE id = ?',
+                (type, id)
+            )
+            db.execute(
+                'UPDATE Media SET release = ?'
+                ' WHERE id = ?',
+                (release, id)
+            )
+            db.execute(
+                'UPDATE Media SET rating = ?'
+                ' WHERE id = ?',
+                (rating, id)
+            )
+            db.execute(
+            'UPDATE Media SET id = ?'
+            ' WHERE id = ?',
+            (newid, id)
             )
             db.commit()
-            return redirect(url_for('review.dashboard'))
+            return redirect(url_for('home'))
 
-        flash(error)
-
-    return render_template('review/edit.html', review=review)
-
+    flash(error)
+    return render_template('edit.html', Media=Media)
 
 
 @app.route('/delete/<int:id>', methods=('GET', 'POST'))
 def delete(id):
-    get_review(id)
+    get_Media(id)
     db = get_db()
-    db.execute('DELETE FROM review WHERE id = ?', (id,))
+    db.execute('DELETE FROM Media WHERE id = ?', (id,))
     db.commit()
-    return redirect(url_for('review.dashboard'))
+    return redirect(url_for('home'))
+
 
 @app.route('/<page_name>')
 def other_page(page_name):
@@ -132,7 +183,7 @@ def register():
             (?, ?, ?, ?, ?)', (id, title, type, release, rating)
             )
             db.commit()
-            return render_template('login.html')
+            return render_template('home.html')
         flash(error)
     return render_template('register.html')
 
