@@ -34,17 +34,67 @@ def close_db(error):
     if hasattr(g, 'sqlite_db'):
         g.sqlite_db.close()
 
+
+def get_Media(id):
+  db = get_db()
+  Media = db.execute(
+        'SELECT id, title, type, release, rating'
+        ' FROM Media'
+        ' WHERE id = ?',
+        (id,)
+  ).fetchone()  
+  if Media is None:
+        abort(404, "Movie id {0} doesn't exist.".format(id))
+
+
 @app.route('/')
 def home():
-    return render_template('home.html')
+    db = get_db()
+    Media = db.execute(
+        'SELECT id, title, author_id, type, release, rating'
+        ' FROM Media'
+        ' WHERE author_id = ?'
+        ' ORDER BY created DESC',
+        (g.Media['id'],)
+    ).fetchall()
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+    return render_template('home.html', Media=Media)
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
+
+@app.route('/edit/<int:id>', methods=('GET', 'POST'))
+def edit(id):
+    review = get_review(id)
+
+    if request.method == 'POST':
+        text = request.form['review-text']
+        text = text.strip()
+        db = get_db()
+        error = None
+
+        if not text:
+            error = 'You can\'t update the review to nothing.'
+        if error is None:
+            db.execute(
+                'UPDATE review SET content = ?'
+                ' WHERE id = ?',
+                (text, id)
+            )
+            db.commit()
+            return redirect(url_for('review.dashboard'))
+
+        flash(error)
+
+    return render_template('review/edit.html', review=review)
+
+
+
+@app.route('/delete/<int:id>', methods=('GET', 'POST'))
+def delete(id):
+    get_review(id)
+    db = get_db()
+    db.execute('DELETE FROM review WHERE id = ?', (id,))
+    db.commit()
+    return redirect(url_for('review.dashboard'))
 
 @app.route('/<page_name>')
 def other_page(page_name):

@@ -8,19 +8,24 @@
 {% endblock %}
 
 
+
 {% block content %}
 <div class="container">
+    <p class="lead">Want to <a href="{{ url_for('register') }}">write a mean review</a>?</p>
+
+    {% if (Media is defined) and Media %}
+    <p class="lead">Here are your media:</p>
+    {% for review in reviews %}
     <blockquote class="blockquote">
-        <p class="mb-0">This paper is more appropriate for a speciality journal. Like, one that specializes in terrible papers.</p>
-        <footer class="blockquote-footer">From @thirdreviewer</footer>
+        <p class="mb-0">{{ Media['title'] }}</p>
+        <footer class="blockquote-footer">
+            From @{{ Media['id'].split("@")[0] }}
+            <a href="{{ url_for('edit', id=Media['id']) }}">Edit</a>
+            <a href="{{ url_for('delete', id=Media['id']) }}">Delete</a>
+        </footer>
     </blockquote>
-    <blockquote class="blockquote">
-        <p class="mb-0">Before I can recommend acceptance, I request the following 272 changes to the manuscript.</p>
-        <footer class="blockquote-footer">From @thirdreviewer</footer>
-    </blockquote>
-    <blockquote class="blockquote">
-        <p class="mb-0">Let me begin by apologizing for being so late with this review - it took me much longer than expected to figure out how best to insult all the authors.</p>
-        <footer class="blockquote-footer">From @thirdreviewer</footer>
-    </blockquote>
+    {% endfor %}
+    {% endif %}
 </div>
+
 {% endblock %}
