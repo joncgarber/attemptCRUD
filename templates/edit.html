@@ -3,14 +3,14 @@
 
 {% block header %}
 <div class="container">
-    <h1>{% block title %}Register an account{% endblock %}</h1>
+    <h1>{% block title %}Edit Media{% endblock %}</h1>
 </div>
 {% endblock %}
 
 
 {% block content %}
 <div class="container">
-    <p class="lead">Enter, edit, delete movies from database.</p>
+    <p class="lead">Edit values from database item.</p>
 </div>
 
 <div class="container">
@@ -18,28 +18,28 @@
 
         <div class="form-group">
             <label for="id">ID</label>
-			<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="id">{{ Media['id'] }}</textarea>
+			<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="id">{{ Medias['id'] }}</textarea>
         </div>
 
         <div class="form-group">
             <label for="title">Title</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="title">{{ Media['title'] }}</textarea>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="title">{{ Medias['title'] }}</textarea>
             <small id="titleHelp" class="form-text text-muted">
         </div>
 
         <div class="form-group">
             <label for="type">Movie or TV Show?</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="type">{{ Media['type'] }}</textarea>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="type">{{ Medias['type'] }}</textarea>
         </div>
 
         <div class="form-group">
             <label for="release">Release Year</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="release year">{{ Media['release year'] }}</textarea>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="release">{{ Medias['release'] }}</textarea>
         </div>
 
         <div class="form-group">
             <label for="rating">Rating</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="rating">{{ Media['rating'] }}</textarea>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="rating">{{ Medias['rating'] }}</textarea>
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>

@@ -123,7 +123,7 @@ def edit(id):
             db.commit()
             return redirect(url_for('home'))
 
-    flash(error)
+        flash(error)
     return render_template('edit.html', Medias=Medias)
 
 
