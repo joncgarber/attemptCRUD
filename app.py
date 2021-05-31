@@ -39,15 +39,15 @@ def close_db(error):
 
 def get_Media(id):
     db = get_db()
-    Media = db.execute(
+    Medias = db.execute(
         'SELECT id, title, type, release, rating'
         ' FROM Media'
         ' WHERE id = ?',
         (id,)
     ).fetchone()  
-    if Media is None:
+    if Medias is None:
         abort(404, "Movie id {0} doesn't exist.".format(id))
-    return Media
+    return Medias
     
 
 @app.route('/')
@@ -61,7 +61,7 @@ def home():
 
 
 
-@app.route('/edit/<int:id>', methods=('GET', 'POST'))
+@app.route('/edit/<string:id>', methods=('GET', 'POST'))
 def edit(id):
     Medias = get_Media(id)
     if request.method == 'POST':
@@ -127,7 +127,7 @@ def edit(id):
     return render_template('edit.html', Medias=Medias)
 
 
-@app.route('/delete/<int:id>', methods=('GET', 'POST'))
+@app.route('/delete/<string:id>', methods=('GET', 'POST'))
 def delete(id):
     get_Media(id)
     db = get_db()
@@ -172,7 +172,7 @@ def register():
             (?, ?, ?, ?, ?)', (id, title, type, release, rating)
             )
             db.commit()
-            return render_template('home.html')
+            return redirect(url_for('home'))
         flash(error)
     return render_template('register.html')
 
