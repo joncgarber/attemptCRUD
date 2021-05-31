@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+
+{% block header %}
+<div class="container">
+    <h1>{% block title %}Register an account{% endblock %}</h1>
+</div>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <p class="lead">Enter, edit, delete movies from database.</p>
+</div>
+
+<div class="container">
+    <form method="post">
+
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="id" class="form-control" id="id" placeholder="s957" name="id">
+        </div>
+
+
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="title" class="form-control" id="title" aria-describedby="titleHelp" placeholder="Black Mirror" name="title">
+            <small id="titleHelp" class="form-text text-muted">
+        </div>
+
+        <div class="form-group">
+            <label for="type">Movie or TV Show?</label>
+            <input type="type" class="form-control" id="type" placeholder="TV Show" name="type">
+        </div>
+
+        <div class="form-group">
+            <label for="release">Release Year</label>
+            <input type="release" class="form-control" id="release" placeholder="2019" name="release">
+        </div>
+
+        <div class="form-group">
+            <label for="rating">Rating</label>
+            <input type="rating" class="form-control" id="rating" placeholder="TV-MA" name="rating">
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}
+
