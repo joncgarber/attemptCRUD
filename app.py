@@ -38,43 +38,32 @@ def close_db(error):
 
 
 def get_Media(id):
-  db = get_db()
-  Media = db.execute(
+    db = get_db()
+    Media = db.execute(
         'SELECT id, title, type, release, rating'
         ' FROM Media'
         ' WHERE id = ?',
         (id,)
-  ).fetchone()  
-  if Media is None:
+    ).fetchone()  
+    if Media is None:
         abort(404, "Movie id {0} doesn't exist.".format(id))
-
+    return Media
+    
 
 @app.route('/')
 def home():
     db = get_db()
-    Media = db.execute(
+    Medias = db.execute(
         'SELECT id, title, type, release, rating'
         ' FROM Media'
     ).fetchall()
-    return render_template('home.html', Media=Media)
+    return render_template('home.html', Medias=Medias)
 
-    '''
-    db = get_db()
-    Media = db.execute(
-        'SELECT id, title, type, release, rating'
-        ' FROM Media'
-        ' WHERE id = ?'
-        ' ORDER BY created DESC',
-        (g.Media['id'],)
-    ).fetchall()
-    '''
-
-    return render_template('home.html', Media=Media)
 
 
 @app.route('/edit/<int:id>', methods=('GET', 'POST'))
 def edit(id):
-    Media = get_Media(id)
+    Medias = get_Media(id)
     if request.method == 'POST':
         newid = request.form['id']
         newid = newid.strip()
@@ -135,7 +124,7 @@ def edit(id):
             return redirect(url_for('home'))
 
     flash(error)
-    return render_template('edit.html', Media=Media)
+    return render_template('edit.html', Medias=Medias)
 
 
 @app.route('/delete/<int:id>', methods=('GET', 'POST'))

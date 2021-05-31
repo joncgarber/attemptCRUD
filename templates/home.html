@@ -13,18 +13,17 @@
 <div class="container">
     <p class="lead">Want to <a href="{{ url_for('register') }}">add a movie/show</a>?</p>
 
-    {% if (Media is defined) and Media %}
-    <p class="lead">Here are your media:</p>
-    {% for review in reviews %}
-    <blockquote class="blockquote">
-        <p class="mb-0">{{ Media['title'] }}</p>
-        <footer class="blockquote-footer">
-            From @{{ Media['id'].split("@")[0] }}
-            <a href="{{ url_for('edit', id=Media['id']) }}">Edit</a>
-            <a href="{{ url_for('delete', id=Media['id']) }}">Delete</a>
-        </footer>
-    </blockquote>
-    {% endfor %}
+    {% if (Medias is defined) and Medias %}
+        <p class="lead">Here are your media:</p>
+        {% for Media in Medias %}
+        <blockquote class="blockquote">
+            <p class="mb-0">{{ Media['title'] }}</p>
+            <footer class="blockquote-footer">From @{{ Media['id'] }}
+                <a href="{{ url_for('edit', id=Media['id']) }}">Edit</a>
+                <a href="{{ url_for('delete', id=Media['id']) }}">Delete</a>
+            </footer>
+        </blockquote>
+        {% endfor %}
     {% endif %}
 </div>
 
