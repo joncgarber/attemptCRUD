@@ -1,0 +1,13 @@
+MANIFEST.in
+schema.sql
+setup.py
+app.egg-info/PKG-INFO
+app.egg-info/SOURCES.txt
+app.egg-info/dependency_links.txt
+app.egg-info/not-zip-safe
+app.egg-info/requires.txt
+app.egg-info/top_level.txt
+templates/base.html
+templates/edit.html
+templates/home.html
+templates/register.html
