@@ -17,7 +17,7 @@
         <p class="lead">Here are your media:</p>
         {% for Media in Medias %}
         <blockquote class="blockquote">
-            <p class="mb-0">{{ Media['id'] }, {Media['title']}, {Media['type']}, {Media['rating']}, {Media['release']}}</p>
+            <p class="mb-0">{{Media['id'], Media['title'], Media['type'], Media['rating'], Media['release']}}</p>
             <footer class="blockquote-footer">
                 <a href="{{ url_for('edit', id=Media['id']) }}">Edit</a>
                 <a href="{{ url_for('delete', id=Media['id']) }}">Delete</a>
